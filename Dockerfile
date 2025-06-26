@@ -1,5 +1,8 @@
 FROM nvidia/cuda:12.8.0-devel-ubuntu22.04 AS build
 
+ARG LLAMA_CPP_TAG="b5753"
+
+
 WORKDIR /srv
 
 # install build tools and clone and compile llama.cpp
@@ -8,15 +11,20 @@ RUN \
   apt-get install -y build-essential git libgomp1 cmake libcurl4-openssl-dev
 
 # -DCMAKE_CUDA_ARCHITECTURES=86;89;120
-RUN git clone https://github.com/ggerganov/llama.cpp.git \
+RUN git clone --branch ${LLAMA_CPP_TAG} https://github.com/ggerganov/llama.cpp.git \
   && cd llama.cpp \
-  && cmake -B \
-    build -DGGML_CUDA=on -DBUILD_SHARED_LIBS=off \
-    -DCMAKE_CUDA_ARCHITECTURES="86;89;120" \
+  && cmake -B build \
+    -DGGML_CUDA=on \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DGGML_NATIVE=OFF \
+    -DLLAMA_BUILD_TESTS=OFF \
+    -DCMAKE_EXE_LINKER_FLAGS="-Wl,--allow-shlib-undefined" \
+    -DCMAKE_CUDA_ARCHITECTURES="86;89;90;100;120" \
   && cmake --build build --config Release -j
 
 
 FROM debian:bookworm-slim
+LABEL org.opencontainers.image.source=https://github.com/jspaulsen/llama-cpp-docker
 
 RUN \
   apt-get update && \
