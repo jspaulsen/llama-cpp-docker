@@ -1,5 +1,6 @@
 services:
   llama:
+    image: llama-cpp-docker
     deploy:
       resources:
         reservations:
