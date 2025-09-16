@@ -1,6 +1,6 @@
 # Build
 ```bash
-docker build -t ghcr.io/jspaulsen/llama-cpp-docker/llama-cpp-docker:latest .
+docker build -t ghcr.io/jspaulsen/llama-cpp-docker:latest .
 ```
 
 # Login
@@ -10,5 +10,5 @@ docker login ghcr.io -u jspaulsen
 
 # Publish
 ```bash
-docker push ghcr.io/jspaulsen/llama-cpp-docker/llama-cpp-docker:latest
+docker push ghcr.io/jspaulsen/llama-cpp-docker:latest
 ```

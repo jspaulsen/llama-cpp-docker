@@ -37,9 +37,10 @@ RUN \
   cmake -B build \
     -DGGML_NATIVE=OFF \
     -DGGML_CUDA=ON \
-    -DGGML_BACKEND_DL=ON \
-    -DGGML_CPU_ALL_VARIANTS=ON \
-    -DLLAMA_BUILD_TESTS=OFF ${CMAKE_ARGS} -DCMAKE_EXE_LINKER_FLAGS=-Wl,--allow-shlib-undefined . && \
+    # -DGGML_BACKEND_DL=ON \
+    # -DGGML_CPU_ALL_VARIANTS=ON \
+    -DLLAMA_BUILD_TESTS=OFF ${CMAKE_ARGS} \
+    -DCMAKE_EXE_LINKER_FLAGS=-Wl,--allow-shlib-undefined && \
   cmake --build build --config Release -j$(nproc)
 
 
