@@ -9,7 +9,7 @@ ARG BASE_CUDA_RUN_CONTAINER=nvidia/cuda:${CUDA_VERSION}-runtime-ubuntu${UBUNTU_V
 # build
 FROM ${BASE_CUDA_DEV_CONTAINER} AS build
 
-ARG LLAMA_CPP_TAG="b6337"
+ARG LLAMA_CPP_TAG="b6713"
 ARG CUDA_DOCKER_ARCH=default
 
 
@@ -35,8 +35,10 @@ RUN \
   fi && \
   # Build
   cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
     -DGGML_NATIVE=OFF \
     -DGGML_CUDA=ON \
+    # NOTE: These don't appear to work. I get issues, it refuses to load even with a GPU.
     # -DGGML_BACKEND_DL=ON \
     # -DGGML_CPU_ALL_VARIANTS=ON \
     -DLLAMA_BUILD_TESTS=OFF ${CMAKE_ARGS} \
